@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
+
+import java.time.LocalDate;
 
 @Table(name = "product_bought")
 @Entity
@@ -28,4 +29,20 @@ public class ProductBought {
 
     @Column
     private String month;
+
+//    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @Column(name = "expiry_date")
+    private LocalDate expirydate;
+
+    @Column
+    private String sku;
+
+    @Column
+    private String category;
+
+    @Column
+    private double weight;
+
+    @Column
+    private String unit;
 }

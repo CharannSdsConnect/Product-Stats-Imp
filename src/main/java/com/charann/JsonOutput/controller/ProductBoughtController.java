@@ -2,6 +2,7 @@ package com.charann.JsonOutput.controller;
 
 import com.charann.JsonOutput.entity.BoughtPieChart;
 import com.charann.JsonOutput.entity.ProductBought;
+import com.charann.JsonOutput.entity.WeightUnit;
 import com.charann.JsonOutput.repository.ProductBoughtRepo;
 import com.charann.JsonOutput.service.ProductBoughtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,11 @@ public class ProductBoughtController {
 
     }
 
+//    @GetMapping("/categorize-products")
+//    public List<ProductBought> categorizeProducts() {
+//        return productBoughtService.categorizeProducts();
+//    }
+
     @GetMapping("/get-pie-details")
     public ResponseEntity<String> pieDetails() {
 
@@ -79,5 +85,28 @@ public class ProductBoughtController {
         productBoughtRepo.delete(productBought);
 
         return "Deleted successfully";
+    }
+
+    @GetMapping("/get-rate/{sku}")
+    public String getRate(@PathVariable String sku, @RequestBody WeightUnit weightunit) {
+        if (productBoughtRepo.existsBySku(sku)) {
+            ProductBought productBought = productBoughtRepo.findBySku(sku);
+            double amt;
+            if(productBought.getUnit().equals(weightunit.getUnit())) {
+                amt = (productBought.getPrice()/productBought.getWeight())* weightunit.getWeight();
+
+            } else if (weightunit.getUnit().equals("kg")) {
+                amt = (productBought.getPrice()/(productBought.getWeight()/1000))* weightunit.getWeight();
+            } else {
+                amt = (productBought.getPrice()/(productBought.getWeight()*1000))* weightunit.getWeight();
+            }
+
+            return String.format("Price of %s %s of %s is %s",
+                    weightunit.getWeight(), weightunit.getUnit(), productBought.getName(), amt);
+
+        }
+        else {
+            return "invalid sku";
+        }
     }
 }

@@ -41,4 +41,8 @@ public class ProductSold {
 
     @Column(name = "total_price")
     private double price;
+
+    @Column
+    private String sku;
+
 }

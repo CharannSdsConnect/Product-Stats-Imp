@@ -49,4 +49,41 @@ public class ProductSoldController {
                 HttpStatus.ACCEPTED
         );
     }
+
+    @GetMapping("/download-daily-report")
+    public void generateDailyExcel(HttpServletResponse response) throws IOException {
+        response.setContentType("application/octet-stream");
+
+        String headerkey = "Content-Disposition";
+        String headerValue = "attachment;filename=daily_report.xls";
+
+        response.setHeader(headerkey, headerValue);
+
+        productSoldService.generateDailyReport(response);
+    }
+
+    @GetMapping("/download-monthly-report")
+    public void generateMonthlyExcel(HttpServletResponse response) throws IOException {
+        response.setContentType("application/octet-stream");
+
+        String headerkey = "Content-Disposition";
+        String headerValue = "attachment;filename=monthly_report.xls";
+
+        response.setHeader(headerkey, headerValue);
+
+        productSoldService.generateMonthlyReport(response);
+    }
+
+    @GetMapping("/download-yearly-report")
+    public void generateYearlyExcel(HttpServletResponse response) throws IOException {
+        response.setContentType("application/octet-stream");
+
+        String headerkey = "Content-Disposition";
+        String headerValue = "attachment;filename=yearly_report.xls";
+
+        response.setHeader(headerkey, headerValue);
+
+        productSoldService.generateYearlyReport(response);
+    }
+
 }
